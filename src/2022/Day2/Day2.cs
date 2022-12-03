@@ -16,8 +16,6 @@ namespace TwentyTwo;
                     };
                 }
             ).ToList();
-            
-           
         }
 
         public Day2Result Run(IList<Day2Args> input)

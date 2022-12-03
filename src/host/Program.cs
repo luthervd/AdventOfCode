@@ -1,17 +1,10 @@
 ﻿using TwentyOne.Day7;
-using TwentyTwo.DayOne;
-using TwentyTwo.DayTwo;
+using TwentyTwo;
 
 
-//var dayOne = new DayOne();
-//var dayArgs = dayOne.LoadArgs();
-//var result = dayOne.Run(dayArgs);
-
-//Console.WriteLine(result);
-
-var day2 = new Day2();
-var dayArgs = day2.LoadArgs();
-var result = day2.Run(dayArgs);
+var day3 = new Day3();
+var dayArgs = day3.LoadArgs();
+var result = day3.Run(dayArgs);
 
 Console.WriteLine(result.Part1);
 Console.WriteLine(result.Part2);
