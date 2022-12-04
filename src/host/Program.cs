@@ -2,9 +2,9 @@
 using TwentyTwo;
 
 
-var day3 = new Day3();
-var dayArgs = day3.LoadArgs();
-var result = day3.Run(dayArgs);
+var day4 = new Day4();
+var dayArgs = day4.LoadArgs();
+var result = day4.Run(dayArgs);
 
 Console.WriteLine(result.Part1);
 Console.WriteLine(result.Part2);
