@@ -1,8 +1,8 @@
 ﻿using TwentyTwo;
 
-var day7 = new Day7();
-var dayArgs = day7.LoadArgs();
-var result = day7.Run(dayArgs);
+var day8 = new Day8();
+var dayArgs = day8.LoadArgs();
+var result = day8.Run(dayArgs);
 
 Console.WriteLine(result.Part1);
 Console.WriteLine(result.Part2);
