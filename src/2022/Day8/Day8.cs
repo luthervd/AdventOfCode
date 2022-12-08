@@ -39,21 +39,18 @@ public class Day8 : IPuzzle<Day8Args, Day8Result>
                     //Sweep up
                     for (var up = i - 1; up >= 0; up--)
                     {
-                        var next = input.Grid[up, y];
-                        upClear = toCheck > next;
+                        upClear = CheckTree(toCheck, up, y, input.Grid);
                         upDistance++;
                         if (!upClear)
                         {
                             break;
                         }
-                        
                     }
                     
                     //Sweep down
                     for (var down = i + 1; down < input.RowCount; down++)
                     {
-                        var next = input.Grid[down, y];
-                        downClear = toCheck > next;
+                        downClear = CheckTree(toCheck, down, y, input.Grid);
                         downDistance++;
                         if (!downClear)
                         {
@@ -65,27 +62,23 @@ public class Day8 : IPuzzle<Day8Args, Day8Result>
                     //Sweep left
                     for (var left = y - 1; left >= 0; left--)
                     {
-                        var next = input.Grid[i, left];
-                        leftClear = toCheck > next;
+                        leftClear = CheckTree(toCheck, i, left, input.Grid);
                         leftDistance++;
                         if (!leftClear)
                         {
                             break;
                         }
-                        
                     }
 
                     //Sweep right
                     for (var right = y + 1; right < input.ColCount; right++)
                     {
-                        var next = input.Grid[i, right];
-                        rightClear = toCheck > next;
+                        rightClear = CheckTree(toCheck, i, right, input.Grid);
                         rightDistance++;
                         if (!rightClear)
                         {
                             break;
                         }
-                        
                     }
 
                     //Check visibility
@@ -105,5 +98,11 @@ public class Day8 : IPuzzle<Day8Args, Day8Result>
                 Part2 = scenicScores.Max()
             };
         }
+    }
+
+    private bool CheckTree(int toCheck, int i, int y, int[,] grid)
+    {
+        var next = grid[i, y];
+        return toCheck > next;
     }
 }
