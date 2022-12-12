@@ -3,46 +3,32 @@ using System.Drawing;
 
 namespace TwentyTwo;
 
-public class Tail
+public class Tail : Leader
 {
     private HashSet<Point> _visited = new HashSet<Point>();
 
-    public Tail(Point start)
+    public Tail(Point start, int followers)
     {
         CurrentPosition = start;
         _visited.Add(start);
+        if(followers > 0)
+        {
+            Tailer = new Tail(start, followers-1);
+        }
     }
 
     public void MoveTo(Point point)
     {
-        if(Math.Abs(point.Y - CurrentPosition.Y) > 0)
-        {
-            while(CurrentPosition.Y != point.Y)
-            {
-                var Y = point.Y > CurrentPosition.Y ? CurrentPosition.Y + 1 : CurrentPosition.Y - 1;
-                var next = new Point(point.X, Y);
-                _visited.Add(next);
-                CurrentPosition = next;
-            }
-            
-        }
-        else if (Math.Abs(point.X - CurrentPosition.X) > 0)
-        {
-            while(CurrentPosition.X != point.X)
-            {
-                var x = point.X > CurrentPosition.X ? CurrentPosition.X + 1 : CurrentPosition.X - 1;
-                var next = new Point(x, point.Y);
-                CurrentPosition = next;
-                if (!_visited.Contains(next))
-                {
-                    _visited.Add(next);
-                }
-            }
-        }
         CurrentPosition = point;
+        _visited.Add(CurrentPosition); 
+        if(Tailer != null)
+        {
+            CheckX();
+            CheckY();
+        }
     }
 
-    public Point CurrentPosition { get; private set; }
+    public override Point CurrentPosition { get; set; }
 
     public int GetVisitedCount()
     {

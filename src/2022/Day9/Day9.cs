@@ -1,5 +1,4 @@
 ﻿using core;
-using System.Drawing;
 
 namespace TwentyTwo;
 
@@ -28,49 +27,52 @@ public class Day9 : IPuzzle<Day9Args, Day9Results>
 
     public Day9Results Run(Day9Args input)
     {
-        var head = new Head();
+        var head = new Head(9);
         input.Instructions.ForEach(x => { 
-            head.Move(x.Direction, x.Amount);
-            var rows = 20;
-            var cols = 20;
-            DrawGrid(rows,cols,head);
-            Console.WriteLine("Press any key to continue");
-            Console.ReadKey();
-            Console.Clear();
+            head.Move(x.Direction, x.Amount,DrawGrid);
+            DrawGrid(head);
         });
+        var tailer = head.Tailer;
+        while(tailer.Tailer != null)
+        {
+            tailer = tailer.Tailer;
+        }
         return new Day9Results
         {
-            Part1 = head.Tail.GetVisitedCount()
+            Part1 = head.Tailer.GetVisitedCount(),
+            Part2 = tailer.GetVisitedCount()
         };
     }
 
-    private void DrawGrid(int rows, int cols, Head head)
+    private void DrawGrid(Head head)
     {
-        var xZero = rows / 2;
-        var yZero = cols/2;
-        Console.WriteLine("###############################");
-        Console.WriteLine($"Head {head.CurrentPosition.X},{head.CurrentPosition.Y} Tail {head.Tail.CurrentPosition.Y},{head.Tail.CurrentPosition.Y}");
-        for(var x = -20; x < rows; x++)
-        {
-            for(var y = -20 ; y < cols; y++)
-            {
-                var headPos = head.CurrentPosition;
-                var tailPos = head.Tail.CurrentPosition;
-                if(headPos.Y == x && headPos.Y == y)
-                {
-                    Console.Write(" H  ");
-                }
-                else if(tailPos.Y == x && tailPos.Y == y)
-                {
-                    Console.Write(" T  ");
-                }
-                else
-                {
-                    Console.Write(" [] ");
-                }
+        //Console.WriteLine("###############################");
+        //Console.WriteLine($"Head {head.CurrentPosition.X},{head.CurrentPosition.Y} Tail {head.Tail.CurrentPosition.X},{head.Tail.CurrentPosition.Y}");
+        //Console.WriteLine($"Visited {head.Tail.GetVisitedCount()}");
+        //for(var y = -10; y < 10; y++)
+        //{
+        //    for(var x = -10 ; x < 10; x++)
+        //    {
+        //        var headPos = head.CurrentPosition;
+        //        var tailPos = head.Tail.CurrentPosition;
+        //        if(headPos.X == x && headPos.Y == y)
+        //        {
+        //            Console.Write(" H");
+        //        }
+        //        else if(tailPos.X == x && tailPos.Y == y)
+        //        {
+        //            Console.Write(" T");
+        //        }
+        //        else
+        //        {
+        //            Console.Write("[]");
+        //        }
                 
-            }
-            Console.WriteLine();
-        }
+        //    }
+        //    Console.WriteLine();
+        //}
+        //Thread.Sleep(10);
+        //Console.Clear();
+        
     }
 }
