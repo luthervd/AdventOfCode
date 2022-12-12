@@ -1,9 +1,17 @@
 ﻿using core;
+using System.Drawing;
 
 namespace TwentyTwo;
 
+public enum MoveDirection
+{
+    Up, Down, Left, Right
+}
+
 public class Day9 : IPuzzle<Day9Args, Day9Results>
 {
+    private List<string> drawStack = new List<string>();
+    
     public Day9Args LoadArgs()
     {
         var args = new Day9Args();
@@ -27,52 +35,66 @@ public class Day9 : IPuzzle<Day9Args, Day9Results>
 
     public Day9Results Run(Day9Args input)
     {
-        var head = new Head(9);
-        input.Instructions.ForEach(x => { 
-            head.Move(x.Direction, x.Amount,DrawGrid);
-            DrawGrid(head);
-        });
-        var tailer = head.Tailer;
-        while(tailer.Tailer != null)
-        {
-            tailer = tailer.Tailer;
-        }
+        var day1 = Handle(input, 2, false);
+        var day2 = Handle(input, 10, false);
+
         return new Day9Results
         {
-            Part1 = head.Tailer.GetVisitedCount(),
-            Part2 = tailer.GetVisitedCount()
+            Part1 = day1,
+            Part2 = day2
         };
+       
+    }
+    
+    private int Handle(Day9Args input, int number, bool drawGrid)
+    {
+        var toMove = new Point[number];
+        var moveTo = new HashSet<Point>();
+        for (var i = 0; i < toMove.Count(); i++)
+        {
+            toMove[0] = new Point(0, 0);
+        }
+        moveTo.Add(toMove.Last());
+        foreach (var instruction in input.Instructions)
+        {
+            for (var i = 0; i < instruction.Amount; i++)
+            {
+                for (var mover = 0; mover < toMove.Length; mover++)
+                {
+                    var item = toMove[mover];
+                    if (mover == 0)
+                    {
+                        var x = instruction.Direction == MoveDirection.Left ? item.X - 1 : instruction.Direction == MoveDirection.Right ? item.X + 1 : item.X;
+                        var y = instruction.Direction == MoveDirection.Down ? item.Y + 1 : instruction.Direction == MoveDirection.Up ? item.Y - 1 : item.Y;
+                        toMove[mover]= new Point(x, y);
+                    }
+                    if (mover + 1 < toMove.Length)
+                    {
+                        var newPoint = Check(toMove[mover], toMove[mover + 1]);
+                        if(newPoint != null)
+                        {
+                            toMove[mover+1] = newPoint.Value;
+                        }
+                    }
+                    if (mover == toMove.Length - 1)
+                    {
+                        moveTo.Add(toMove[mover]);
+                    }
+                }
+            }
+        }
+        return moveTo.Count();
     }
 
-    private void DrawGrid(Head head)
+    private Point? Check(Point left, Point right)
     {
-        //Console.WriteLine("###############################");
-        //Console.WriteLine($"Head {head.CurrentPosition.X},{head.CurrentPosition.Y} Tail {head.Tail.CurrentPosition.X},{head.Tail.CurrentPosition.Y}");
-        //Console.WriteLine($"Visited {head.Tail.GetVisitedCount()}");
-        //for(var y = -10; y < 10; y++)
-        //{
-        //    for(var x = -10 ; x < 10; x++)
-        //    {
-        //        var headPos = head.CurrentPosition;
-        //        var tailPos = head.Tail.CurrentPosition;
-        //        if(headPos.X == x && headPos.Y == y)
-        //        {
-        //            Console.Write(" H");
-        //        }
-        //        else if(tailPos.X == x && tailPos.Y == y)
-        //        {
-        //            Console.Write(" T");
-        //        }
-        //        else
-        //        {
-        //            Console.Write("[]");
-        //        }
-                
-        //    }
-        //    Console.WriteLine();
-        //}
-        //Thread.Sleep(10);
-        //Console.Clear();
-        
+        var next = new Point(right.X,right.Y);
+        if (Math.Abs(left.Y - right.Y) > 1 || Math.Abs(left.X - right.X) > 1)
+        {
+            next.X = right.X + (right.X == left.X ? 0 : right.X < left.X ? 1 : -1);
+            next.Y = right.Y + (right.Y == left.Y ? 0 : right.Y < left.Y ? 1 : -1);
+        }
+        return next != right ? next : null;
     }
+
 }
