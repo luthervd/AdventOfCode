@@ -5,5 +5,5 @@ var dayArgs = day10.LoadArgs();
 var result = day10.Run(dayArgs);
 
 Console.WriteLine(result.Part1);
-//Console.WriteLine(result.Part2);
+Console.WriteLine(result.Part2);
 

@@ -1,4 +1,5 @@
 ﻿using core;
+using System.Text;
 
 namespace TwentyTwo;
 
@@ -14,6 +15,9 @@ public class InstructionSet
 
 public class Day10 : IPuzzle<Day10Args, Day10Result>
 {
+    private StringBuilder _crtDrawer = new StringBuilder();
+    private int _pixelIndex = 0;
+
     public Day10Args LoadArgs()
     {
         var lines = File.ReadAllLines("Day10/Day10Data.txt");
@@ -47,7 +51,9 @@ public class Day10 : IPuzzle<Day10Args, Day10Result>
             {
                 actions.Add(instructionSet=>
                 {
+                    Draw(instructionSet.XValue - 1, 3, instructionSet.CycleCount);
                     var nextCycle = instructionSet.CycleCount+1;
+                   
                     var total = instructionSet.Total;
                     if (cycleIndex.Any(x => x == nextCycle))
                     {
@@ -65,7 +71,9 @@ public class Day10 : IPuzzle<Day10Args, Day10Result>
             {
                 actions.Add(instructionSet =>
                 {
+                    Draw(instructionSet.XValue - 1, 3, instructionSet.CycleCount);
                     var step1 = instructionSet.CycleCount+1;
+                    
                     var total = instructionSet.Total;
                     if (cycleIndex.Any(x => x == step1))
                     {
@@ -73,6 +81,7 @@ public class Day10 : IPuzzle<Day10Args, Day10Result>
                         total = total += toAdd;
                     }
                     var step2 = step1+1;
+                    Draw(instructionSet.XValue - 1, 3, step1);
                     var xValue = instructionSet.XValue += step.Item2;
                     if (cycleIndex.Any(x => x == step2))
                     {
@@ -98,8 +107,27 @@ public class Day10 : IPuzzle<Day10Args, Day10Result>
         }
         return new Day10Result
         {
-            Part1 = instruction.Total
+            Part1 = instruction.Total,
+            Part2 = _crtDrawer.ToString()
         };
+    }
+
+    private void Draw(int spriteStart, int spriteLength, int cycle)
+    {
+        if(_pixelIndex == 40)
+        {
+            _crtDrawer.AppendLine();
+            _pixelIndex = 0;
+        }
+        if(_pixelIndex >= spriteStart && _pixelIndex <= spriteStart+spriteLength-1)
+        {
+            _crtDrawer.Append('#');
+        }
+        else
+        {
+            _crtDrawer.Append('.');
+        }
+        _pixelIndex++;
     }
 }
 
