@@ -53,12 +53,12 @@ public class Day11 : IPuzzle<Day11Args, Day11Results>
         {
             foreach (var monkey in input)
             {
-                while (monkey.HasNext())
+                while (monkey.Items.Any())
                 {
                     var next = calm ? monkey.ThrowNext(commonDivisor) : monkey.ThrowNext(0);
                     if (next != null)
                     {
-                        input[next.Value.throwTo].Receive(next.Value.item);
+                        input[next.Value.throwTo].Items.Enqueue(next.Value.item);
                     }
                 }
             }
