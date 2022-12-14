@@ -44,10 +44,11 @@ public class Day11 : IPuzzle<Day11Args, Day11Results>
     private static long Run(int numberOfRounds, Monkey[] input, bool calm)
     {
         long commonDivisor = 1;
-        foreach(var m in input)
+        if(calm)
         {
-            commonDivisor *= m.Divisor;
+            input.ToList().ForEach(x => commonDivisor *= x.Divisor);
         }
+      
         for (var i = 0; i < numberOfRounds; i++)
         {
             foreach (var monkey in input)

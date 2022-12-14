@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Numerics;
-
-namespace TwentyTwo;
+﻿namespace TwentyTwo;
 
 public class Monkey
 {
@@ -26,7 +23,7 @@ public class Monkey
             InspectionCount++;
             var left = _items.Dequeue();
             var right = _operationArgs[2] == "old" ? left : long.Parse(_operationArgs[2]);
-            left = _operationArgs[1] == "*" ? Multiply(left, right) : Add(left, right);
+            left = _operationArgs[1] == "*" ? left*right : left+right;
             if (commonDivisor == 0)
             {
                 left = left / 3;
@@ -40,7 +37,6 @@ public class Monkey
                 return (left, _throwConditions.onTrue);
             }
             return (left, _throwConditions.onFalse);
-
         }
 
     }
@@ -57,15 +53,5 @@ public class Monkey
     public bool HasNext()
     {
         return _items.Any();
-    }
-
-    private long Multiply(long left, long right)
-    {
-        return left * right;
-    }
-
-    private long Add(long left, long right)
-    {
-        return left + right;
     }
 }
