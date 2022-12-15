@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace core
 {
@@ -68,7 +63,7 @@ namespace core
                 {
                     throw new ArgumentException("No end point");
                 }
-                return (_end.Value, _startValue);
+                return (_end.Value, _endValue);
             }
         }
 

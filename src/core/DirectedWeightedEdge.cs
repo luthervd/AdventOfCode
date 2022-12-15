@@ -1,8 +1,8 @@
 ﻿namespace core
 {
-    public class DirectedWeightedEdge<TNode, TWeight> where TWeight : IComparable<TWeight>
+    public class DirectedWeightedEdge<TNode>
     {
-        public DirectedWeightedEdge(TNode from, TNode to, TWeight weight)
+        public DirectedWeightedEdge(TNode from, TNode to, long weight)
         {
             From = from;
             To = to;
@@ -13,6 +13,6 @@
 
         public TNode To { get; init; }
 
-        public TWeight Weight { get; set; }
+        public long Weight { get; set; }
     }
 }
