@@ -71,41 +71,23 @@ public class Day15 : IPuzzle<Day15Args, Day15Results>
                 sen.Add(sensor);
             }
         }
-
-        foreach (var sensor in sen)
+        sen = sen.OrderBy(x => x.MinY).ToList();
+        for(var i = 0;i < part2Max; i++)
         {
-            var start = 0;
-            if (sensor.MinY > 0)
+            foreach (var sensor in sen.Where(x => x.MinY < i && x.MaxY > i))
             {
-                start = sensor.MinY;
-            }
-            var max = part2Max;
-            if (sensor.MaxY < max)
-            {
-                max = sensor.MaxY;
-            }
-            for (; start < max; start++)
-            {
-                if (sensor.TryGetLine(start, out var line))
+                if (sensor.TryGetLine(i, out var line))
                 {
-                    if (part2.ContainsKey(start))
+                    if (part2.ContainsKey(i))
                     {
-                        if (part2[start][0].Overlaps(line))
-                        {
-                            var newLine = part2[start][0].Extend(line);
-                            part2[start][0] = newLine;
-                        }
-                        else
-                        {
-                            part2[start].Add(line);
-                        }
-                      
+                        part2[i].Add(line);
                     }
                     else
                     {
-                        part2[start] = new List<Line>();
-                        part2[start].Add(line);
+                        part2[i] = new List<Line>();
+                        part2[i].Add(line);
                     }
+
                 }
             }
         }
@@ -113,8 +95,7 @@ public class Day15 : IPuzzle<Day15Args, Day15Results>
         var part1Result = Map(lines[part1Y]);
         var length = part1Result.Sum(x => x.Length);
         var part2Final = new Dictionary<int, List<Line>>();
-        var moreThanOne = part2.Where(x => x.Value.Count > 1);
-        foreach(var kv in moreThanOne)
+        foreach(var kv in part2.Where(x => x.Value.Count > 1))
         {
             var mapped = Map(part2[kv.Key]);
             part2Final[kv.Key] = mapped;

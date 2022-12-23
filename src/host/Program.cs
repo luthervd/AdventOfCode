@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Text;
-using TwentyTwo;
+﻿using TwentyTwo;
 
 
 var day15 = new Day15();
